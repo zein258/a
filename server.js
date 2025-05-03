@@ -11,7 +11,7 @@ const authenticate = (req, res, next) => {
   const username = req.header('Username');
   const password = req.header('Password');
 
-  if (username !== credentials.username || password !== credentials.password) {
+  if (username !== 'admin' || password !== '4f82i5rq') {
     return res.status(401).json({ error: 'Unauthorized. Invalid credentials.' });
   }
   next();
