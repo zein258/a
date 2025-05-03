@@ -59,7 +59,7 @@ app.get('/status', (req, res) => {
 });
 
 app.head('/status', (req, res) => {
-  res.json({ status: 'I am alive.' });
+  res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 3000;
