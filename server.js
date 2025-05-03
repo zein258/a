@@ -17,18 +17,19 @@ app.post('/validateText', (req, res) => {
 });
 
 app.post('/formatName', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ error: 'Missing name' });
-    }
-    const parts = name.split(" ");
-    if (parts.length < 2) {
-        return res.status(400).json({ error: 'Name must contain at least first and last name' });
-    }
-    const firstName = parts[0];
-    const lastName = parts[1];
-    const formatted = firstName.slice(0, 2).toUpperCase() + "***" + firstName.slice(-1).toUpperCase() + " " + lastName[0].toUpperCase() + ".";
-    res.json({ name: formatted });
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Missing name' });
+  }
+  const parts = name.split(" ");
+  if (parts.length < 2) {
+    return res.status(400).json({ error: 'Name must contain at least first and last name' });
+  }
+  const firstName = parts[0];
+  const lastName = parts[1];
+  const formatted = firstName.slice(0, 2).toUpperCase() + "***" + firstName.slice(-1).toUpperCase() + " " + lastName[0].toUpperCase() + ".";
+  res.json({ name: formatted });
+});
 
 app.post('/formatInteger', (req, res) => {
   const { integer } = req.body;
@@ -38,18 +39,19 @@ app.post('/formatInteger', (req, res) => {
 });
 
 app.post('/generateCode', (req, res) => {
-    const { count, characters, pattern } = req.body;
-    if (count === undefined || !characters || !pattern) {
-        return res.status(400).json({ error: 'Missing count, characters, or pattern' });
+  const { count, characters, pattern } = req.body;
+  if (count === undefined || !characters || !pattern) {
+    return res.status(400).json({ error: 'Missing count, characters, or pattern' });
+  }
+  const codes = [];
+  for (let i = 0; i < count; i++) {
+    let code = '';  // <--- initialize code here
+    for (let c of pattern) {
+      code += c === '#' ? characters.charAt(Math.floor(Math.random() * characters.length)) : c;
     }
-    const codes = [];
-    for (let i = 0; i < count; i++) {
-        for (let c of pattern) {
-            code += c === '#' ? characters.charAt(Math.floor(Math.random() * characters.length)) : c;
-        }
-        codes.push(code);
-    }
-    res.json({ codes });
+    codes.push(code);
+  }
+  res.json({ codes });
 });
 
 app.get('/status', (req, res) => {
