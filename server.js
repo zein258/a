@@ -4,14 +4,18 @@ app.use(express.json());
 
 app.post('/splitText', (req, res) => {
   const { text, delimiter } = req.body;
-  if (!text || !delimiter) return res.status(400).send('Missing text or delimiter.');
+  if (!text || !delimiter) {
+    return res.status(400).json({ error: 'Missing text or delimiter.' });
+  }
   const words = text.split(delimiter);
   res.json({ result: words });
 });
 
 app.post('/validateText', (req, res) => {
   const { text, check } = req.body;
-  if (text === undefined || check === undefined) return res.status(400).send('Missing text or check value.');
+  if (text === undefined || check === undefined) {
+    return res.status(400).json({ error: 'Missing text or check value.' });
+  }
   const isValid = text === check;
   res.json({ valid: isValid });
 });
@@ -19,11 +23,11 @@ app.post('/validateText', (req, res) => {
 app.post('/formatName', (req, res) => {
   const { name } = req.body;
   if (!name) {
-    return res.status(400).json({ error: 'Missing name' });
+    return res.status(400).json({ error: 'Missing name.' });
   }
   const parts = name.split(" ");
   if (parts.length < 2) {
-    return res.status(400).json({ error: 'Name must contain at least first and last name' });
+    return res.status(400).json({ error: 'Name must contain at least first and last name.' });
   }
   const firstName = parts[0];
   const lastName = parts[1];
@@ -33,7 +37,9 @@ app.post('/formatName', (req, res) => {
 
 app.post('/formatInteger', (req, res) => {
   const { integer } = req.body;
-  if (integer === undefined) return res.status(400).send('Missing integer.');
+  if (integer === undefined) {
+    return res.status(400).json({ error: 'Missing integer.' });
+  }
   const formatted = parseFloat(integer).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   res.json({ result: formatted });
 });
@@ -41,7 +47,7 @@ app.post('/formatInteger', (req, res) => {
 app.post('/generateCode', (req, res) => {
   const { count, characters, pattern } = req.body;
   if (count === undefined || !characters || !pattern) {
-    return res.status(400).json({ error: 'Missing count, characters, or pattern' });
+    return res.status(400).json({ error: 'Missing count, characters, or pattern.' });
   }
   const codes = [];
   for (let i = 0; i < count; i++) {
