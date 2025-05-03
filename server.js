@@ -55,7 +55,11 @@ app.post('/generateCode', (req, res) => {
 });
 
 app.get('/status', (req, res) => {
-  res.json({ status: "I am alive." });
+  res.json({ status: 'I am alive.' });
+});
+
+app.head('/status', (req, res) => {
+  res.json({ status: 'I am alive.' });
 });
 
 const PORT = process.env.PORT || 3000;
