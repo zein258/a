@@ -2,6 +2,20 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+// Authentication middleware
+const authenticate = (req, res, next) => {
+  const username = req.header('Username');
+  const password = req.header('Password');
+
+  if (username !== 'admin' || password !== '8dJ4kP9nB2a') {
+    return res.status(401).json({ error: 'Unauthorized. Invalid credentials.' });
+  }
+  next();
+};
+
+// Apply authentication to all routes
+app.use(authenticate);
+
 app.post('/splitText', (req, res) => {
   const { text, delimiter } = req.body;
   if (!text || !delimiter) return res.status(400).send('Missing text or delimiter.');
@@ -45,7 +59,7 @@ app.post('/generateCode', (req, res) => {
   }
   const codes = [];
   for (let i = 0; i < count; i++) {
-    let code = '';  // <--- initialize code here
+    let code = '';
     for (let c of pattern) {
       code += c === '#' ? characters.charAt(Math.floor(Math.random() * characters.length)) : c;
     }
