@@ -2,24 +2,6 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-// Authentication middleware
-const authenticate = (req, res, next) => {
-  if (req.path === '/status') {
-    return next(); // Skip auth for /status
-  }
-
-  const username = req.header('Username');
-  const password = req.header('Password');
-
-  if (username !== 'admin' || password !== '4f82i5rq') {
-    return res.status(401).json({ error: 'Unauthorized. Invalid credentials.' });
-  }
-  next();
-};
-
-// Apply authentication to all routes
-app.use(authenticate);
-
 app.post('/splitText', (req, res) => {
   const { text, delimiter } = req.body;
   if (!text || !delimiter) return res.status(400).send('Missing text or delimiter.');
