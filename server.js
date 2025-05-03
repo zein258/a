@@ -4,10 +4,14 @@ app.use(express.json());
 
 // Authentication middleware
 const authenticate = (req, res, next) => {
+  if (req.path === '/status') {
+    return next(); // Skip auth for /status
+  }
+
   const username = req.header('Username');
   const password = req.header('Password');
 
-  if (username !== 'admin' || password !== '8dJ4kP9nB2a') {
+  if (username !== credentials.username || password !== credentials.password) {
     return res.status(401).json({ error: 'Unauthorized. Invalid credentials.' });
   }
   next();
